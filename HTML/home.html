@@ -1,0 +1,269 @@
+<html>
+<head>
+	<style>
+		table {
+			border-collapse: collapse;
+		}
+
+		th, td {
+			border: 1px solid black;
+			padding: 5px;
+		}
+	</style>
+	
+</head>
+<body>
+
+	<!-- <input type="text" name = "blog" placeholder="post" required/> </br>
+	<input type="submit" value = Post /> -->
+	<h1>Welcome {{first_name}}</h1>
+
+<style type="text/css">
+	table, th, td{
+		border: 1px solid black;
+	}
+</style>
+
+<form action="/home" method = "POST">
+	<!-- <input type="checkbox" id="viewFlight" name="viewFlight">
+	<label for="ViewFlight"> View Your Flight</label><br>
+	
+	
+	
+	<input type="submit" value="Submit"> -->
+	<h2> View Your Purchased Flight(s) </h2>
+	{% if view_flight_data %}
+	<table>
+		<th>Flight Number</th>
+		<th>Airline</th>
+		<th> Departure Airpot </th>
+		<th> Arrival Airport </th>
+		<th>Departure Time</th>
+		<th>Departure Date</th>
+		<th> Ticket ID</th>
+		{% for line in view_flight_data %}
+			<tr>
+				<td>{{line['flight_num']}}</td>
+				<td>{{line['airline_name']}}</td>
+				<td>{{line['departure_airport']}}</td>
+				<td>{{line['arrival_airport']}}</td>
+				<td>{{line['departure_time']}}</td>
+				<td>{{line['departure_date']}}</td>
+				<th> {{line['ticket_id']}}</td>
+			</tr>
+		{% endfor %}
+	</table>
+	<br>
+	<label for="select_a_flight">Click to delete flight:</label>
+	<input type="checkbox" id = "select_a_flight" name = "select_a_flight" onchange="toggleSelect()"/>
+	<br><br>
+	<div id="delete_info" style="display:none;">
+		<label for="Ticket ID"> Confirm Ticket ID:</label>
+		<select name="Ticket ID" id="Ticket ID">
+			{% for line in view_flight_data %}
+			<option value="{{line['ticket_id']}}">{{line['ticket_id']}}</option>
+			{% endfor %}
+		</select> <br><br>
+	<!-- <input type="text" name = "Ticket ID" placeholder="Confirm Ticket ID" required/></br> -->
+	<input type="submit" name = "Delete" value = "Delete" />
+	</div>
+	{% if delete_error %}
+		<p class="delete_error"><strong>Error:</strong> {{delete_error}}</p>
+	{% endif %}
+
+	</form>
+	<form action="/home" method = "POST">
+
+	<label for="rate_a_flight">Click to review a flight:</label>
+	<input type="checkbox" id = "rate_a_flight" name = "rate_a_flight" onchange="toggleSelect2()"/>
+	<div id="review_info" style="display:none;">
+		<br><br>
+		<label for="Number Flight"> Confirm Flight Number:</label>
+		<select name="Number Flight" id="Number Flight">
+			{% for line in view_flight_data %}
+			<option value="{{line['flight_num']}}">{{line['flight_num']}}</option>
+			{% endfor %}
+		</select> <br><br>
+		<!-- <input type="number" name = "Number Flight" placeholder="Confirm Flight Number" required/><br><br> -->
+		<label for="Rate">Rate: </label>
+		<input type="number" id = "Rate" name = "Rate" min = "1" max = "5" required/></br><br>
+		<!-- <input type="text" name = "Comment Section" placeholder="Comment about the flight" height = "200" size = "30" maxlength = "150" required/></br> -->
+		<textarea id= "commentSection" name="commentSection" rows="3" cols="40"  maxlength = "150" placeholder= "Comment here!!!!" required></textarea><br>
+		<input type="submit" name = "Review" value = "Review" />
+	</div> 
+	{% if comment_error %}
+		<p class="delete_error"><strong>Error:</strong> {{comment_error}}</p>
+	{% endif %}
+
+
+	{% endif %}
+</form>
+
+<section>
+	<h2><strong>Search for Flights:</strong></h2>
+	<form action="/home" method="POST">
+		
+		<label for="departure_airport">Departure Airport :</label>
+		<select name="departure_airport" id="departure_airport">
+			{% for line in all_airport_data%}
+			<option value="{{line['code']}}">{{line['code']}}</option>
+			{%endfor%}
+		</select>
+		<label for="arrival_airport">Arrival Airport :</label>
+		<select name="arrival_airport" id="arrival_airport">
+			{% for line in all_airport_data%}
+			<option value="{{line['code']}}">{{line['code']}}</option>
+			{%endfor%}
+		</select>
+		<br><br>
+		
+		<label for="departure_date">Departure Date:</label>
+		<input type="date" name = "departure_date" placehold="Departure Date" required/> </br>
+		<input type="submit" name = "Submit" value="Submit"><br><br>
+
+		{% if future_flight_data%}
+		<a href = "/buy_flights">Buy Flight</a>
+			<table>
+				<th>Status</th>
+				<th>Airline</th>
+				<th>Flight Number</th>
+				<th>Departure Date</th>
+				<th>Arrival Date</th>
+				<th>Ticket Price</th>
+				
+				{% for line in future_flight_data %}
+					<tr>
+						<td>{{line['status']}}</td>
+						<td>{{line['airline_name']}}</td>
+						<td>{{line['flight_num']}}</td>
+						<td>{{line['departure_date']}}</td>
+						<td>{{line['arrival_date']}}</td>
+						<td>${{line['base_price']}}</td>
+					</tr>
+				{% endfor %}
+				
+		
+			</table>
+	<br><br>
+	<h2>Return flights for Round Trip</h2>
+	{%if return_flights_data%}
+		<table>
+			<th>Status</th>
+			<th>Airline</th>
+			<th>Flight Number</th>
+			<th>Departure Date</th>
+			<th>Arrival Date</th>
+			<th>Ticket Price</th>
+			{% for line in return_flights_data %}
+				<tr>
+					<td>{{line['status']}}</td>
+					<td>{{line['airline_name']}}</td>
+					<td>{{line['flight_num']}}</td>
+					<td>{{line['departure_date']}}</td>
+					<td>{{line['arrival_date']}}</td>
+					<td>${{line['base_price']}}</td>
+				</tr>
+			{% endfor %}
+		</table>
+	{%endif%}
+
+	{%if not return_flights_data%}
+	<p><strong>{{return_error}}</strong></p>
+	{%endif%}
+
+	{%endif%}
+
+		
+		<div id="table_container" style="display:none;">
+		<table>
+			<th>Status</th>
+			<th>Airline</th>
+			<th>Flight Number</th>
+			<th>Departure Date</th>
+			<th>Arrival Date</th>
+			<th>Return Date</th>
+			<th>Ticket Price</th>
+			{% if future_flight_data%}
+			{% for line in future_flight_data %}
+				<tr>
+					<td>{{line['status']}}</td>
+					<td>{{line['airline_name']}}</td>
+					<td>{{line['flight_num']}}</td>
+					<td>{{line['departure_date']}}</td>
+					<td>{{line['arrival_date']}}</td>
+					<td>Return</td>
+					<td>${{line['base_price']}}</td>
+
+				</tr>
+		
+			{% endfor %}
+			<a href = "/buy_flights">Buy Flight</a>
+			{%endif%}
+		</table>
+		</div>
+		<!-- <a href = "/buy_flights">Buy Flight</a> -->
+		<script>
+	
+			function toggleSelect(){
+				var delete_button = document.getElementById("delete_info");
+				
+				if (document.getElementById("select_a_flight").checked){
+					delete_button.style.display = "block";
+				}
+				else{
+					delete_button.style.display = "none";
+
+				}
+			}
+
+			function toggleSelect2(){
+				var delete_button = document.getElementById("review_info");
+				
+				if (document.getElementById("rate_a_flight").checked){
+					delete_button.style.display = "block";
+				}
+				else{
+					delete_button.style.display = "none";
+
+				}
+			}
+
+		</script>
+	</form>
+
+	<form action="/home" method = "POST">
+		<h2>View Spending</h2>
+    	
+    	<input type="submit" name = "spending_submit" value="View Spending"><br><br>
+	</form>
+
+</section>
+
+
+<a href="/logout">Logout</a>
+
+</body>
+
+
+</html>
+
+
+<!-- <label for="delete_a_flight">Click to delete flight:</label>
+	<input type="radio" id = "delete_a_flight" name = "select_a_flight" onchange="toggleSelect()"/>
+	<div id="delete_info" style="display:none;">
+	<input type="text" name = "Ticket ID" placeholder="Confirm Ticket ID" required/></br>
+	<input type="submit" name = "Delete" value = "Delete" />
+	</div>
+	{% if delete_error %}
+		<p class="delete_error"><strong>Error:</strong> {{delete_error}}</p>
+	{% endif %}
+	<label for="rate_a_flight">Click to review a flight:</label>
+	<input type="radio" id = "rate_a_flight" name = "select_a_flight" onchange="toggleSelect()"/>
+	<div id="review_info" style="display:none;">
+		<input type="number" name = "Number Flight" placeholder="Confirm Flight Number" required/></br>
+		<label for="Rate">Rate: </label>
+		<input type="number" id = "Rate name = "Rate" min = 1 max = 5 required/></br>
+		<!-- <input type="text" name = "Comment Section" placeholder="Comment about the flight" height = "200" size = "30" maxlength = "150" required/></br> -->
+		<!-- <textarea id= "commentSection" name="commentSection" rows="3" cols="40" placeholder= "Comment here!!!!" required></textarea><br>
+		<input type="submit" name = "Review" value = "Review" />
+	</div> -->

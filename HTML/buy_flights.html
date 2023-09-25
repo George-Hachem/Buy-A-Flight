@@ -1,0 +1,30 @@
+<html>
+<head>
+</head>
+<body>
+<form action="/buy_flights" method="POST">
+    <h2>Enter Card Information:</h2>
+	<input type="text" name = "Card Type" placeholder="Card Type" required/></br>
+	<input type="text" name = "Name on Card" placeholder="Name on Card" required/></br>
+    <input type="date" name = "Expiration Date" placeholder="Expiration Date" required/></br>
+	<input type="text" name = "Card Number" placeholder="Card Number" min = 16 max = 18 required/></br>
+	<label for="Flight Number"> Confirm Flight Number:</label>
+		<select name="Flight Number" id="Flight Number">
+			{% for line in list_of_flights %}
+			<option value="{{line['flight_num']}}">{{line['flight_num']}}</option>
+			{% endfor %}
+		</select>
+		<br><br>
+	<!-- <input type="number" name = "Flight Number" placeholder="Confirm Flight Number" required/></br> -->
+	<input type="submit" value = Enter />
+	{% if error %}
+		<p class="error"><strong>Error:</strong> {{error}}</p>
+	{% endif %}
+</form>
+
+<a href="/home">Go back</a>
+
+</body>
+
+
+</html>

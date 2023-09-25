@@ -1,0 +1,41 @@
+<html>
+<head>
+    <style>
+    table {
+        border-collapse: collapse;
+    }
+
+    th, td {
+        border: 1px solid black;
+        padding: 5px;
+    }
+    </style>
+		
+</head>
+<body>
+<form action="/spending" method = "POST">
+<h1>Spending</h1>
+
+<label for="period1">Select the date:</label>
+<input type = "date" id = "period1" name = "period1" placehold = "Select Start Date" required> 
+<label for="period2">Select the date:</label>
+<input type = "date" id = "period2" name = "period2" placehold = "Select Final Date" required>
+<input type="submit" name = "period" value="View Report"><br><br>
+
+<h2>Here is your total Spending For These Time Periods</h2>
+	<table>
+        <th>Total spending in the last year</th>
+        <th>Total spending in the last 6 months</th>
+        <th>Total spending in the last period</th>
+			<tr>
+				<td>${{year_data}}</td>
+                <td>${{month_data}}</td>
+                <td>${{period_data}}</td>
+			</tr>
+	</table>
+
+
+<a href="/home">Go back</a>
+
+</form>
+</body>

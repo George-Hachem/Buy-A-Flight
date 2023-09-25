@@ -1,0 +1,42 @@
+<html>
+<head>
+    <style>
+    table {
+        border-collapse: collapse;
+    }
+
+    th, td {
+        border: 1px solid black;
+        padding: 5px;
+    }
+    </style>
+		
+</head>
+<body>
+<form action="/flight_rating" method = "POST">
+<h1>View Flight Reviews</h1>
+{% if view_rating_data %}
+	<table>
+		<th>Rate</th>
+        <th>Comments</th>
+		{% for line in view_rating_data %}
+			<tr>
+				<td>{{line['rate']}}</td>
+				<td>{{line['comments']}}</td>
+			</tr>
+        {% endfor %}
+	</table>
+<p>Average Rating: {{avg_rating}}</p>
+{%endif%}
+
+{% if not view_rating_data %}
+<p class="error"><strong>{{error}}</strong> </p>
+{%endif%}
+
+<a href="/staffhome">Go back</a>
+
+</form>
+</body>
+
+
+</html>

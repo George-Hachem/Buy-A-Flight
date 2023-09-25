@@ -1,0 +1,39 @@
+<html>
+<head>
+	<style>
+		table {
+			border-collapse: collapse;
+		}
+
+		th, td {
+			border: 1px solid black;
+			padding: 5px;
+		}
+	</style>
+</head>
+<body>
+<form action="/airplane_list" method="POST">
+	<h1>Confirmed! Airplane added</h1>
+	<h2>View Aiplanes for your airline</h2>
+	<table>
+		<th>Airplane ID</th>
+        <th>Number of Seats</th>
+        <th>Manufacturing Company</th>
+		<th>Manufacturing Date</th>
+		{% for line in airplane_list_data %}
+			<tr>
+				<td>{{line['airplane_id']}}</td>
+				<td>{{line['num_seats']}}</td>
+                <td>{{line['Manufacturing_comp']}}</td>
+				<td>{{line['Manufacturing_date']}}</td>
+			</tr>
+        {% endfor %}
+	</table>
+</form>
+
+<a href="/staffhome">Go back</a>
+
+</body>
+
+
+</html>

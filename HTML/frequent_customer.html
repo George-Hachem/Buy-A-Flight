@@ -1,0 +1,45 @@
+<html>
+<head>
+    <style>
+    table {
+        border-collapse: collapse;
+    }
+
+    th, td {
+        border: 1px solid black;
+        padding: 5px;
+    }
+    </style>
+		
+</head>
+<body>
+<form action="/frequent_customer" method = "POST">
+<h1>Most Frequent Customers</h1>
+{% if freq_cus_data %}
+	<table>
+		<th>E-mail</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Number of Purchases</th>
+		{% for line in freq_cus_data %}
+			<tr>
+				<td>{{line['e_mail']}}</td>
+				<td>{{line['first_name']}}</td>
+                <td>{{line['last_name']}}</td>
+                <th>{{line['num_ticket']}}</th>
+			</tr>
+        {% endfor %}
+	</table>
+{%endif%}
+
+{% if not freq_cus_data %}
+<p class="error"><strong>{{error}}</strong> </p>
+{%endif%}
+
+<a href="/staffhome">Go back</a>
+
+</form>
+</body>
+
+
+</html>

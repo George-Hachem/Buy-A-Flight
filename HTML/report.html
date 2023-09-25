@@ -1,0 +1,39 @@
+<html>
+<head>
+    <style>
+    table {
+        border-collapse: collapse;
+    }
+
+    th, td {
+        border: 1px solid black;
+        padding: 5px;
+    }
+    </style>
+		
+</head>
+<body>
+<form action="/report" method = "POST">
+<h1>Report</h1>
+
+<label for="time_range">Select the date:</label>
+<input type = "date" id = "time_range" name = "time_range" placehold = "Select Date" required> 
+<input type="submit" name = "date_report" value="View Report"><br><br>
+{% if report %}
+<h2>Here is your report for the last {{date_diff}} days</h2>
+	<table>
+        <th>Number of Purchases</th>
+			<tr>
+				<td>{{report}}</td>
+			</tr>
+	</table>
+{%endif%}
+
+{% if not report %}
+<p class="error"><strong>{{report_error}}</strong> </p>
+{%endif%}
+
+<a href="/staffhome">Go back</a>
+
+</form>
+</body>

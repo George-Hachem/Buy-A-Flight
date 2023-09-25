@@ -1,0 +1,210 @@
+<html>
+<head>
+	<style>
+		table {
+			border-collapse: collapse;
+		}
+
+		th, td {
+			border: 1px solid black;
+			padding: 5px;
+		}
+	</style>
+	
+</head>
+<body>
+
+	<!-- <input type="text" name = "blog" placeholder="post" required/> </br>
+	<input type="submit" value = Post /> -->
+	<h1>Welcome {{staff_name}}</h1>
+
+<style type="text/css">
+	table, th, td{
+		border: 1px solid black;
+	}
+</style>
+
+<form action="/staffhome" method = "POST">
+	
+	<h2> View your Flight(s) for the next 30 days</h2>
+	{% if view_flight_data %}
+	<table>
+		<th>Flight Number</th>
+        <th>Status</th>
+        <th>Departure Date</th>
+		<th>Departure Time</th>
+        <th>Arrival Date</th>
+		<th>Arrival Time</th>
+		<th>Departure Airport</th>
+        <th>Arrival Airport</th>
+		{% for line in view_flight_data %}
+			<tr>
+				<td>{{line['flight_num']}}</td>
+				<td>{{line['status']}}</td>
+                <td>{{line['departure_date']}}</td>
+				<td>{{line['departure_time']}}</td>
+                <td>{{line['arrival_date']}}</td>
+				<td>{{line['arrival_time']}}</td>
+                <td>{{line['departure_airport']}}</td>
+                <td>{{line['arrival_airport']}}</td>
+			</tr>
+        {% endfor %}
+	</table>
+    <br><br>
+    <label for="flight_num">Flight Number:</label>
+    <select name="flight_num" id="flight_num1" required>
+        {% for line in view_flight_data %}
+        <option value="{{line['flight_num']}}">{{line['flight_num']}}</option>
+        {% endfor %}
+    </select>
+
+    <br><br>
+    <label for="new_status">Status:</label>
+    <select name="new_status" id="new_status" required>
+        <option value="On-time">On-time</option>
+        <option value="Delayed">Delayed</option>
+        
+    </select>
+    <br><br>
+    <input type="submit" name = "change_status" value="Change Status"><br><br>
+    {% endif %}
+
+    {% if not view_flight_data %}
+    <p class="error"><strong>{{error}}</strong> </p>
+    {% endif %}
+
+</form>
+
+<form action="/staffhome" method = "POST">
+	
+	<h2> Create Flights For Your Airline</h2>
+    <label for="airplane_id">Airplane ID:</label>
+		<select name="airplane_id" id="airplane_id" required>
+            {% for line in airplane_id_data %}
+			<option value="{{line['airplane_id']}}">{{line['airplane_id']}}</option>
+            {% endfor %}
+		</select>
+        <br><br>
+    <label for="status">Status:</label>
+    <select name="status" id="status" required>
+        
+        <option value="On-time">On-time</option>
+        <option value="Delayed">Delayed</option>
+        
+    </select>
+
+    <br><br>
+    <label for="base_price">Base Price:</label>
+    <input type = "number" id = "base_price" name = "base_price" min = "0" required/>
+
+    <br><br>
+    <label for="departure_date">Departure Date:</label>
+	<input type="date" name = "departure_date" placehold="Departure Date" required/>
+    
+    <br><br>
+    <label for="departure_time">Departure Time:</label>
+	<input type="time" name = "departure_time" placehold="Departure Time" required/> 
+
+    <br><br>
+    <label for="arrival_date">Arrival Date:</label>
+	<input type="date" name = "arrival_date" placehold="Arrival Date" required/>
+    
+    <br><br>
+    <label for="arrival_time">Arrival Time:</label>
+	<input type="time" name = "arrival_time" placehold="Arrival Time" required/> 
+
+    <br><br>
+    <label for="departure_airport">Departure Airport :</label>
+		<select name="departure_airport" id="departure_airport" required>
+            {%for line in airport_data%}
+			<option value="{{line['code']}}">{{line['code']}}</option>
+            {%endfor%}
+		</select>
+    <br><br>
+    <label for="arrival_airport">Arrival Airport :</label>
+    <select name="arrival_airport" id="arrival_airport" required>
+        {%for line in airport_data%}
+			<option value="{{line['code']}}">{{line['code']}}</option>
+        {%endfor%}
+    </select>
+    <br><br>
+
+    <input type="submit" name = "Submit" value="Submit"><br><br>
+</form>
+
+<form action="/staffhome" method = "POST">
+    <h2>Add an Airplane</h2>
+
+    <label for="num_seats">Number of Seats</label>
+	<input type="number" name = "num_seats" placehold="Number of Seats" min = "1" required/> 
+    <br><br>
+    <label for="manufact_comp">Manufacturing Company</label>
+	<input type="text" name = "manufact_comp" placehold="Manufacturing Company" required/> 
+
+    <br><br>
+    <label for="manufact_date">Manufacturing Date</label>
+	<input type="date" name = "manufact_date" placehold="Manufacturing Date" required/> 
+    <br><br>
+    <input type="submit" name = "add_airplane" value="Add Airplane"><br><br>
+</form>
+
+<form action="/staffhome" method = "POST">
+    <h2>Add an Airport</h2>
+
+    <label for="airport_name">Airport Name</label>
+	<input type="text" name = "airport_name" placehold="Airport Name" required/> 
+    <br><br>
+    <label for="code">Airport Code</label>
+	<input type="text" name = "code" placehold="code"  max = 3 required/> 
+    <br><br>
+    <label for="city">City</label>
+	<input type="text" name = "city" placehold="city" required/> 
+    <br><br>
+    <label for="country">Country</label>
+	<input type="text" name = "country" placehold="Country" required/>
+    <br><br>
+    <label for="airport_type">Arrival Airport :</label>
+    <select name="airport_type" id="airport_type" required>
+        <option value="Domestic">Domestic</option>
+        <option value="International">International</option>
+        <option value="Inter/Dom">Inter/Dom</option>
+    </select>
+    <br><br>
+    <input type="submit" name = "add_airport" value="Add Airport"><br><br>
+
+</form>
+
+<form action="/staffhome" method = "POST">
+    <h2>View Flight Reviews</h2>
+    {%if past_flight_data%}
+    <label for="flight_num">Flight Number:</label>
+    <select name="flight_num" id="flight_num" required>
+        {% for line in past_flight_data %}
+        <option value="{{line['flight_num']}}">{{line['flight_num']}}</option>
+        {%endfor%}
+    </select>
+    <br><br>
+    <input type="submit" name = "view_flight_rating" value="View Rating"><br><br>
+    {%endif%}
+    {%if not past_flight_data%}
+    <p><strong>{{past_flight_error}}</strong></p>
+    {%endif%}
+</form>
+
+<form action="/staffhome" method = "POST">
+    <h2>View Most Frequent Customers</h2>
+    <input type="submit" name = "view_freq_cus" value="View Frequent Customer"><br><br>
+</from>
+
+<form action="/staffhome" method = "POST">
+    <h2>View Reports</h2>
+    <input type="submit" name = "view_report" value="View Report"><br><br>
+</from>
+
+<form action="/staffhome" method = "POST">
+    <h2>View Revenue</h2>
+    <input type="submit" name = "view_rev" value="View Revenue"><br><br>
+</from>
+<a href="/logout">Logout</a>
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style>
+		h1{text-align: center;}
+
+		.navbar{
+			background: rgb(61, 55, 55);
+			height: 80px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			font-size: 1.2rem;
+			position: sticky;
+			top: 0;
+			z-index: 999;
+		}
+		.navbar_container{
+			display: flex;
+			justify-content: space-between;
+			height: 85px;
+			z-index: 1;
+			width: 100%;
+			max-width: 1300px;
+			margin: 0 auto;
+			padding: 0 50px;
+		}
+		#navbar_logo{
+			color:whitesmoke;
+			display: flex;
+			align-items:center;
+			font-size: 2rem;
+			text-decoration: none;
+
+		}
+
+		.navbar_menu{
+			display: flex;
+			align-items: center;
+			list-style: none;
+			text-align: center;
+		}
+		.navbar_items{
+			height: 80px;
+		}
+
+		.navbar_links{
+			color: white;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			text-decoration: none;
+			padding: 0 1rem;
+			height: 100%;
+		}
+		.navbar_links:hover{
+			color: rgb(100, 80, 80);
+			transition: all 0.3s ease;
+		}
+		table, th, td{
+		border: 1px solid black;
+		}
+		th, td{
+			text-align: center;
+			padding: 8px;
+  			border-bottom: 1px solid #ddd;
+		}
+		th{
+			color: black;
+		}
+
+
+	</style>
+	<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+
+	<nav class="navbar">
+		<div class = "navbar_container">
+			<a id = "navbar_logo">Master Flight</a>
+			  
+	
+		<ul class="navbar_menu">
+			<li class = "navbar_item">
+				<a href = "/login" class ="navbar_links">Login</a>
+			</li>
+			<li class="navbar_item">
+				<a href = "/register" class ="navbar_links">Register</a>
+			</li>
+			<li class="navbar_item">
+				<a href = "/stafflogin" class ="navbar_links">Staff Login</a>
+			</li>
+			<li class="navbar_item">
+				<a href = "/staffregister" class ="navbar_links">Staff Registration</a>
+			</li>
+		
+		</ul>
+	</div>
+</nav>
+<form action="/" method="POST">
+	<h2>Search For Flights</h2>
+	<label for= "departure_airport">Departure Airport :</label>
+	<select name="departure_airport" id="departure_airport">
+		{% for line in all_airport_data%}
+        <option value="{{line['code']}}">{{line['code']}}</option>
+        {%endfor%}
+	</select>
+	<label for="arrival_airport">Arrival Airport :</label>
+	<select name="arrival_airport" id="arrival_airport">
+		{% for line in all_airport_data%}
+        <option value="{{line['code']}}">{{line['code']}}</option>
+		
+        {%endfor%}
+	</select>
+	<br><br>
+	<label for="departure_date">Departure Date:</label>
+	<input type="date" name = "departure_date" placehold="Departure Date" required/> </br>
+	<br><br>
+	<input type="submit" value="Submit">
+	<br><br>
+
+{% if flight_data %}
+<h2>Future Flights</h2>
+    <table>
+        <th>Status</th>
+        <th>Airline</th>
+        <th>Flight Number</th>
+        <th>Departure Date</th>
+        <th>Arrival Date</th>
+        {% for line in flight_data %}
+            <tr>
+                <td>{{line['status']}}</td>
+                <td>{{line['airline_name']}}</td>
+                <td>{{line['flight_num']}}</td>
+                <td>{{line['departure_date']}}</td>
+                <td>{{line['arrival_date']}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+	<br><br>
+	<h2>Return flights for Round Trip</h2>
+	{%if return_flights%}
+		<table>
+			<th>Status</th>
+			<th>Airline</th>
+			<th>Flight Number</th>
+			<th>Departure Date</th>
+			<th>Arrival Date</th>
+			{% for line in return_flights %}
+				<tr>
+					<td>{{line['status']}}</td>
+					<td>{{line['airline_name']}}</td>
+					<td>{{line['flight_num']}}</td>
+					<td>{{line['departure_date']}}</td>
+					<td>{{line['arrival_date']}}</td>
+				</tr>
+			{% endfor %}
+		</table>
+	{%endif%}
+
+		{%if not return_flights%}
+		<p><strong>{{return_error}}</strong></p>
+		{%endif%}
+
+
+	<script>
+		function toggleTable(){
+			var table_return = document.getElementById("table_container");
+			
+			if (document.getElementById("Round_trip").checked){
+				table_return.style.display = "block";
+
+			}
+			else{
+				table_return.style.display = "none";
+
+			}
+		}
+	</script>
+
+
+{% endif %}
+
+</form>
+
+
+
+
+
+{% if message %}
+	<a href="/logout">Logout</a>
+	<a href="/remove_account">Remove Account</a>
+	<p class="message">You are logged in {{message}}. You have {{num}} follower(s)</p> </br>
+	<a href="/tweets">View your tweets</a> </br>
+	<a href="/find_people">Find people to follow</a> </br>
+	<a href="/unfollow">Unfollow someone</a> </br>
+	<a href="/view_followed">View people you have followed</a> </br>
+	</br>
+
+        <h4>15 most recent tweets from you and your followers </h4> </br>
+
+	{% for line in tweets%}
+	        <p>{{line}}</p>
+	        <hr>
+	{% endfor %}
+	{% endif %}
+</body>
+
+</html>
+
+
+
+  
