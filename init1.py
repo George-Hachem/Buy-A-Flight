@@ -74,7 +74,7 @@ def loginAuth():
 	else:
 		error = 'Invalid information. Please try again'
 		return render_template('login.html', error=error)
-#LOL	
+	
 #Authenticates the Staff login
 @app.route('/StaffLoginAuth', methods=['GET', 'POST'])
 def StaffLoginAuth():
